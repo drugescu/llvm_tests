@@ -44,7 +44,10 @@
 #include "llvm/IR/Module.h"
 #include "llvm/Pass.h"
 #include "llvm/Transforms/Utils/Local.h"
-#include "llvm/Analysis/CallGraph.h"l
+#include "llvm/Analysis/CallGraph.h"
+#include "llvm/Support/raw_ostream.h"
+
+#include "llvm/Analysis/CFG.h"
 
 #include <algorithm>
 #include <cctype>
@@ -123,10 +126,10 @@ llvm::Function* createSumFunction(Module* module) {
 
 void InitializeModuleAndPassManager(void) {
   // Open a new module.
-  TheModule = llvm::make_unique<Module>("my cool jit", TheContext);
+  TheModule = std::make_unique<Module>("my cool jit", TheContext);
   
   // Create a new pass manager attached to it.
-  TheFPM = llvm::make_unique<llvm::legacy::FunctionPassManager>(TheModule.get());
+  TheFPM = std::make_unique<llvm::legacy::FunctionPassManager>(TheModule.get());
 
   // Do simple "peephole" optimizations and bit-twiddling optzns.
   TheFPM->add(createInstructionCombiningPass());
@@ -135,7 +138,7 @@ void InitializeModuleAndPassManager(void) {
   // Eliminate Common SubExpressions.
   TheFPM->add(createGVNPass());
   // Simplify the control flow graph (deleting unreachable blocks, etc).
-  TheFPM->add(createCFGSimplificationPass());
+  //TheFPM->add(createCFGSimplificationPass());
 
   TheFPM->doInitialization();
 }
