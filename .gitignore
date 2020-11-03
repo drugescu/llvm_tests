@@ -3,3 +3,4 @@
 *.pch
 *.gch
 *.cpp~
+*.out
