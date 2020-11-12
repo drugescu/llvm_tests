@@ -34,10 +34,10 @@ int main() {
   FunctionType *putsType = 
   FunctionType::get(builder.getInt32Ty(), argsRef, false);
   auto funcCallee = module->getOrInsertFunction("puts", putsType);
-  Value *putsFunc = funcCallee.getCallee();
+  auto *putsFunc = funcCallee.getCallee();
  
   // Create a call to puts with the aforementioned string
-  builder.CreateCall(putsFunc, helloWorld);
+  builder.CreateCall(putsType, putsFunc, helloWorld);
   
   // Create a return void instruction
   builder.CreateRetVoid();
